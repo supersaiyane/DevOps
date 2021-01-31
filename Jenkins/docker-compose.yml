@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    environment:
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dmail.smtp.starttls.enable=true -Djenkins.model.Jenkins.crumbIssuerProxyCompatibility=true
+      JENKINS_OPTS: --argumentsRealm.role.user=admin --argumentsRealm.passwd.admin=admin --argumentsRealm.role.admin=admin
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    build: .

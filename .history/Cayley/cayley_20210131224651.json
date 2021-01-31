@@ -1,0 +1,6 @@
+{
+    "store": {
+      "backend": "mysql",
+      "address": "user:password!@tcp(ip)/db"
+    }
+}

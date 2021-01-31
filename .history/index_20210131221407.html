@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+  <link href="https://myCDN.com/prism@v1.23.0/themes/prism.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+</head>
+<body>
+  <script src="https://myCDN.com/prism@v1.23.0/components/prism-core.min.js"></script>
+  <script src="https://myCDN.com/prism@v1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/disqus.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script> 
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'Documentation',
+      repo: 'https://github.com/docsifyjs/docsify/',
+      maxLevel: 6,
+      disqus: 'shortname',
+      logo: '/_media/icon.svg',
+      //coverpage: true,
+      //coverpage: 'cover.md',
+      mergeNavbar: true,
+      loadNavbar: true,
+      loadNavbar: 'nav.md',
+      auto2top: true,
+      homepage: 'home.md',
+      homepage:'https://raw.githubusercontent.com/docsifyjs/docsify/master/README.md'
+    }
+  </script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'Github Application Client ID',
+    clientSecret: 'Github Application Client Secret',
+    repo: 'Github repo',
+    owner: 'Github repo owner',
+    admin: ['Github repo collaborators, only these guys can initialize github issues'],
+    // facebook-like distraction free mode
+    distractionFreeMode: true
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+  <!-- Docsify v4 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+</body>
+</html>

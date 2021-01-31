@@ -1,0 +1,98 @@
+pipeline {
+      agent {label 'docker_slave'}
+  stages {
+      stage('Cloning git repo') {
+        steps {
+          git(url: 'git@gitlab.com:gurpreet.singh_verti/cayley.git', poll: true, credentialsId: 'gitlabcredstoken')
+          echo 'Git Cloned Successfully'
+        }
+      }
+
+      stage('Create Docker image') {
+        steps {
+          script {
+            dockerImage = docker.build "gcr.io/evident-theory-282613/cayley_master:latest"
+            echo 'Docker Image Created Successfully'   
+          }
+
+        }
+      }
+
+      stage('Pushing DockerImage to GCR') {      
+        steps {
+          withDockerRegistry([credentialsId: 'gcr:jenkins-containerregistry_gcp', url: 'https://gcr.io']){
+            script{
+              dockerImage.push()
+              echo 'Docker Image Pushed Successfully'
+            }                
+          }
+        }
+      }
+      
+    stage('Deploying on All environments') {
+      when {
+        branch 'master'
+      }
+      parallel {
+        stage('Deploy on production') {
+          steps {
+            input(message: 'Do you want to Deployment ?', id: 'OK')
+            echo 'Deployed on Production'
+            ansiblePlaybook installation: 'ansible', inventory: '/opt/ansible/inventory/production/k8s.yml', playbook: '/opt/ansible/inventory/production/cayley/deploy/cayley_master_prod_deploy.yml'
+          }
+        }
+		
+		stage('Deploy on development') {
+          steps {
+            input(message: 'Do you want to Deployment ?', id: 'OK')
+            echo 'Deployed on Development'
+          }
+        }
+		
+		stage('Deploy on stage') {
+          steps {
+            input(message: 'Do you want to Deployment ?', id: 'OK')
+            echo 'Deployed on Stage'
+          }
+        }
+		
+		stage('Deploy on qa') {
+          steps {
+            input(message: 'Do you want to Deployment ?', id: 'OK')
+            echo 'Deployed on QA'
+          }
+        }
+      }
+    }
+  }
+
+  environment {
+        EMAIL_TO = 'gurpreet.singh@vertisystem.com'
+    }
+
+  post {
+        failure {
+            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+                    to: "${EMAIL_TO}", 
+                    subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+        }
+
+        success {
+            emailext body: '${JELLY_SCRIPT,template="html-with-health-and-console"}',
+                    to: "${EMAIL_TO}", 
+                    subject: 'Build passed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER',
+                    mimeType: 'text/html'
+        }
+
+        unstable {
+            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+                    to: "${EMAIL_TO}", 
+                    subject: 'Unstable build in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+        }
+        changed {
+            emailext body: 'Check console output at $BUILD_URL to view the results.', 
+                    to: "${EMAIL_TO}", 
+                    subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER'
+        }
+    }
+}

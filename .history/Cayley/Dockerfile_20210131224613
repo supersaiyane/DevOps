@@ -1,0 +1,13 @@
+FROM cayleygraph/cayley:v0.7.6 as cayley
+
+# Any base image you want here
+FROM alpine
+
+# Copy the Cayley binary to the image
+COPY --from=cayley /bin/cayley /bin/cayley
+COPY  cayley.json /etc/cayley.json
+#COPY --from=cayley /etc/cayley.json /etc/cayley.json
+#COPY --from=cayley /data/cayley.db /data/cayley.db
+
+# Run Cayley
+ENTRYPOINT ["cayley", "http", "--host=:64210"]

@@ -1,0 +1,6 @@
+{
+    "store": {
+      "backend": "mysql",
+      "address": "gurpreet:Srishti1234!@tcp(10.103.208.5)/cayleydb"
+    }
+}

@@ -1,0 +1,59 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: cayley
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cayley
+  namespace: cayley
+spec:
+  selector:
+    app: cayley
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: cayley
+  namespace: cayley
+spec:
+  selector:
+    matchLabels:
+      app: cayley
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: cayley
+    spec:
+      # initContainers:
+      # - name: cayley-init
+      # image: gcr.io/evident-theory-282613/cayley_master:latest
+      #  imagePullPolicy: Always
+      # command:
+      # - cayley
+      # - init
+      # - -c=/etc/cayley.json
+      containers:
+      - name: cayley
+        image: gcr.io/evident-theory-282613/cayley_master:latest
+        imagePullPolicy: Always
+        command:
+        - cayley
+        - http
+          # - --init # TODO: remove once initContainers is out of beta
+        - -c=/etc/cayley.json
+        - --host=:64210  
+        ports:
+        - name: http 
+          containerPort: 64210

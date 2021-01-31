@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+  
+  tasks: 
+
+  - name: Take Production kube access
+    shell: gcloud container clusters get-credentials rconn-prod --zone us-central1-b --project evident-theory-282613
+
+  - name: create a Production deployment
+    command: kubectl apply -f cayley-single.yml
+    ignore_errors: yes
+    
+  - name: Take Development kube access
+    shell: gcloud container clusters get-credentials rconn-dev --region us-east1 --project evident-theory-282613
+
+  - name: create a Development deployment
+    command: kubectl apply -f cayley-single.yml
+    ignore_errors: yes
+
+  - name: Take Stage  kube access
+    shell: gcloud container clusters get-credentials rconn-stage --region us-west2 --project evident-theory-282613
+
+  - name: create a stage deployment
+    command: kubectl apply -f cayley-single.yml
+    ignore_errors: yes   
+
+  - name: Take QA kube access
+    shell: gcloud container clusters get-credentials rconn-qa --region us-west1 --project evident-theory-282613
+
+  - name: create a qa deployment
+    command: kubectl apply -f cayley-single.yml
+    ignore_errors: yes
+
+    #  - name: update deployment with new pods if image updated in docker hub
+    # command: kubectl rollout restart deployment.v1.apps/cayley 
+    # ignore_errors: yes

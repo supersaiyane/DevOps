@@ -1,0 +1,6 @@
+---
+# Use a custom config file, and a specific context.
+plugin: community.kubernetes.k8s
+connections:
+  - kubeconfig: /root/.kube/config
+    context: 'gke_evident-theory-282613_us-central1-b_rconn-prod'
