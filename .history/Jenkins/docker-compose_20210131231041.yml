@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   jenkins:
-    image: <image_name_from_Dockerfile>
+    image: jenkins/jenkins:lts
     privileged: true
     environment:
       JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dmail.smtp.starttls.enable=true -Djenkins.model.Jenkins.crumbIssuerProxyCompatibility=true
