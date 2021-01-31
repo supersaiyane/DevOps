@@ -1,4 +1,4 @@
-[![Originated from: GitHub/supersaiyane](https://img.shields.io/badge/Originated%20from-GitHub%2Fsupersaiyane-brightgreen)](https://github.com/supersaiyane/docker-cheatsheet/edit/master/README.md) [![dev.to Badge](https://img.shields.io/badge/-@gurpreetsingh-000000?style=flat&labelColor=000000&logo=dev.to&link=https://dev.to/gurpreetsingh)](https://dev.to/gurpreetsingh) 
+[![Originated from: GitHub/supersaiyane](https://img.shields.io/badge/Originated%20from-GitHub%2Fsupersaiyane-brightgreen)](https://github.com/supersaiyane/Git-Cheetsheet) [![dev.to Badge](https://img.shields.io/badge/-@gurpreetsingh-000000?style=flat&labelColor=000000&logo=dev.to&link=https://dev.to/gurpreetsingh)](https://dev.to/gurpreetsingh) 
 
 # Git-Cheetsheet
 A cheat sheet for uncommon Git commands
