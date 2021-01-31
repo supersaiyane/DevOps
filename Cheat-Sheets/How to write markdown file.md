@@ -1,3 +1,5 @@
+[![Originated from: GitHub/supersaiyane](https://img.shields.io/badge/Originated%20from-GitHub%2Fsupersaiyane-brightgreen)](https://github.com/supersaiyane/Markdown-cheetsheet/blob/main/README.md) [![dev.to Badge](https://img.shields.io/badge/-@gurpreetsingh-000000?style=flat&labelColor=000000&logo=dev.to&link=https://dev.to/gurpreetsingh)](https://dev.to/gurpreetsingh) 
+
 # Markdown Cheetsheet
 
 ##### Table of Contents
