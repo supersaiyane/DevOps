@@ -1,4 +1,4 @@
-This topic will be divided into a series where I, will be explaining different tools setup and integrations with one another to create a complete DevOps CI/CD pipeline.
+:metal: This topic will be divided into a series where I, will be explaining different tools setup and integrations with one another to create a complete DevOps CI/CD pipeline.
 We will be exploring the tools like 
 1. Gitlab
    * Merge Request and Code Review
