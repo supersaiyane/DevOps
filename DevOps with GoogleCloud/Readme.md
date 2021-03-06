@@ -53,7 +53,7 @@ We will be exploring the tools like
    * *[Basics](https://github.com/supersaiyane/Git-Cheetsheet)*
    * *[Using Git Plugin in Visual Code](https://code.visualstudio.com/docs/editor/versioncontrol)*
 6. *Know the basics of Docker.*
- * *[Basics](https://github.com/supersaiyane/docker-cheatsheet/blob/master/README.md)*
+   * *[Basics](https://github.com/supersaiyane/docker-cheatsheet/blob/master/README.md)*
 7. *We will be using React Application as Frontend and Backend as Nodejs server.*
 
 
