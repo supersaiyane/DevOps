@@ -19,9 +19,9 @@ ingress-nginx-controller   LoadBalancer   10.92.26.121   34.94.165.154   80:3134
 
 Now you can use this IP with domain names like 
 
-*localtls:* A DNS server in Python3 to provide TLS to webservices on local addresses. It resolves addresses such as '192-168-0-1.yourdomain.net' to 192.168.0.1 and has a valid TLS certificate for them.
-*xip.io / nip.io*
-*sslip.io:* Alternative to this service, supports IPv6 and custom domains.
+* *localtls:* A DNS server in Python3 to provide TLS to webservices on local addresses. It resolves addresses such as '192-168-0-1.yourdomain.net' to 192.168.0.1 and has a valid TLS certificate for them.
+* *xip.io / nip.io*
+* *sslip.io:* Alternative to this service, supports IPv6 and custom domains.
 
 for more information click on the link below
 [nip.io](https://nip.io/)
