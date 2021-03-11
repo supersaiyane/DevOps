@@ -62,3 +62,14 @@ This will be a always a temporary access as
 ```
 export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/my-key.json"
 ```
+
+# In Docker
+
+```
+docker run \
+  -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/[FILE_NAME].json \
+  -v $(pwd):/tmp/keys/[FILE_NAME].json:ro \
+  gcr.io/[PROJECT_ID]/[IMAGE]
+```
+
+
