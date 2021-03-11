@@ -5,7 +5,8 @@
 Create a GitHub OAuth application. The Consumer Key and Consumer Secret are used to authorize access to GitHub resources.The authorization callback URL must match the below format and path, and must use your exact server scheme and host.
 
 
-![](https://github.com/supersaiyane/devops/blob/master/droneci/resources/github_application_created.png)
+![](https://github.com/supersaiyane/DevOps/blob/6a15d26150c7991d944279a177632d606d29c913/DroneCI/resources/github_application_create.png)
+
 ![](https://github.com/supersaiyane/DevOps/blob/362d0cc8d3cc611d4d7e4c69706b1efe0d0bbc7a/DroneCI/resources/github_application_created.png)
 
 ## Create a Shared Secret
