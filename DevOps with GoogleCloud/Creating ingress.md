@@ -41,8 +41,8 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: rconn
-          servicePort: 5000
+          serviceName: <service>
+          servicePort: <port>
 ```
 
 
