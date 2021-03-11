@@ -33,11 +33,11 @@ $ docker pull drone/drone:1
 
 The Drone server is configured using environment variables. This article references a subset of configuration options, defined below. See [Configuration](https://docs.drone.io/server/reference/) for a complete list of configuration options.
 
-- _DRONE_GITHUB_CLIENT_ID_ Required string value provides your GitHub oauth Client ID generated in the previous step.
-- _DRONE_GITHUB_CLIENT_SECRET_ Required string value provides your GitHub oauth Client Secret generated in the previous step.
-- _DRONE_RPC_SECRET_ Required string value provides the shared secret generated in the previous step. This is used to authenticate the rpc connection between the server and runners. The server and runner must be provided the same secret value.
-- _DRONE_SERVER_HOST_ Required string value provides your external hostname or IP address. If using an IP address you may include the port. For example drone.company.com.
-- _DRONE_SERVER_PROTO_ Required string value provides your external protocol scheme. This value should be set to http or https. This field defaults to https if you configure ssl or acme.
+- **DRONE_GITHUB_CLIENT_ID** Required string value provides your GitHub oauth Client ID generated in the previous step.
+- **DRONE_GITHUB_CLIENT_SECRET** Required string value provides your GitHub oauth Client Secret generated in the previous step.
+- **DRONE_RPC_SECRET** Required string value provides the shared secret generated in the previous step. This is used to authenticate the rpc connection between the server and runners. The server and runner must be provided the same secret value.
+- **DRONE_SERVER_HOST** Required string value provides your external hostname or IP address. If using an IP address you may include the port. For example drone.company.com.
+- **DRONE_SERVER_PROTO** Required string value provides your external protocol scheme. This value should be set to http or https. This field defaults to https if you configure ssl or acme.
 
 ## Start the Server
 
