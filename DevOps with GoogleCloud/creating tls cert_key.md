@@ -12,7 +12,33 @@ $ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out $
 
 Then create the secret in the cluster via:
 ```
-kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
+kubectl create secret rconntls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
 ```
 
 The resulting secret will be of type kubernetes.io/tls
+
+usage
+
+you need to append tls array under spec in Ingress yaml
+
+```
+kind: Ingress
+metadata:
+  name: ingress-resource
+  namespace: rconn
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: 34.83.216.249.xip.io
+    http:
+      paths:
+      - backend:
+          serviceName: rconn
+          servicePort: 5000
+  tls:
+     - hosts:
+       - 34.83.216.249.xip.io
+       secretName: rconntls
+```
+
