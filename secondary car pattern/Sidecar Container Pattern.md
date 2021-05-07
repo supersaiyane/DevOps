@@ -53,8 +53,34 @@ Here is the example project you can clone and run it on your machine. You need t
 
 Let’s implement a simple project to understand this pattern. Here is a simple pod that has main and sidecar containers. The main container is nginx serving on the port **80 **that takes the index.html from the volume mount **workdir** location. The Sidecar container with the image busybox creates logs in the same location with a timestamp. Since the Sidecar container and main container runs parallel Nginx will display the new log information every time you hit in the browser.
 
- <iframe src="https://medium.com/media/93399daa63df3ade49a84e798c7eefb3" frameborder=0></iframe>
-
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-container-demo
+spec:
+  containers:
+  - image: busybox
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo echo $(date -u) 'Hi I am from Sidecar container' >> /var/log/index.html; sleep 5;done"]
+    name: sidecar-container
+    resources: {}
+    volumeMounts:
+    - name: var-logs
+      mountPath: /var/log
+  - image: nginx
+    name: main-container
+    resources: {}
+    ports:
+      - containerPort: 80
+    volumeMounts:
+    - name: var-logs
+      mountPath: /usr/share/nginx/html
+  dnsPolicy: Default
+  volumes:
+  - name: var-logs
+    emptyDir: {}
+```
     // create the pod
     kubectl create -f pod.yml
 
@@ -78,7 +104,73 @@ Let’s create a deployment object with the same pod specification with 5 replic
 
 Let’s look at the below deployment object where we define one main container and two sidecar containers. All the containers run in parallel. The two sidecar containers create logs in the location **/var/log. **The main container Nginx serves those log files as when we hit the NGINX web server from the port 80. You will see that in action in a while.
 
- <iframe src="https://medium.com/media/2f6b36402390d3ac72a8867e0c871ce7" frameborder=0></iframe>
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-webapp
+  name: nginx-webapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nginx-webapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-webapp
+    spec:
+      containers:
+      - image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo echo $(date -u) 'Hi I am from Sidecar container 1' >> /var/log/index.html; sleep 5;done"]
+        name: sidecar-container1
+        resources: {}
+        volumeMounts:
+          - name: var-logs
+            mountPath: /var/log
+      - image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo echo $(date -u) 'Hi I am from Sidecar container 2' >> /var/log/index.html; sleep 5;done"]
+        name: sidecar-container2
+        resources: {}
+        volumeMounts:
+          - name: var-logs
+            mountPath: /var/log
+      - image: nginx
+        name: main-container
+        resources: {}
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: var-logs
+            mountPath: /usr/share/nginx/html
+      dnsPolicy: Default
+      volumes:
+      - name: var-logs
+        emptyDir: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-webapp
+  labels:
+    run: nginx-webapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: nginx-webapp
+  type: NodePort
+```  
 
 Let’s follow these commands to test the deployment.
 
