@@ -57,7 +57,7 @@ Imagine your main container generates logs in text format and external systems n
 
 The Adapter container is a simple express node server that reads from the location /var/log/file.log and produces JSON format. Let’s implement a simple project to understand this pattern. The Adapter container is a simple express API that serves these logs as a JSON response. Here is the file server.js
 
-```express
+```node.js
 const express = require('express');
 const lineReader = require('line-reader'),
       Promise = require('bluebird');
@@ -151,7 +151,66 @@ Let’s create a deployment object with the same pod specification with 5 replic
 
 Let’s look at the below deployment object where we define one main container and one adapter container. All the containers run in parallel. The main container creates logs in the location **/var/log/file.log. **The adapter container serves those log files in a JSON format on the REST API on the port **3080**. You will see that in action in a while.
 
- <iframe src="https://medium.com/media/ae4ef046d13805338901855dbf302775" frameborder=0></iframe>
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: node-webapp
+  name: node-webapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: node-webapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: node-webapp
+    spec:
+      containers:
+      - image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo $(date -u)'#This is log' >> /var/log/file.log; sleep 5;done"]
+        name: main-container
+        resources: {}
+        volumeMounts:
+          - name: var-logs
+            mountPath: /var/log
+      - image: bbachin1/adapter-node-server
+        name: adapter-container
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+          - containerPort: 3080
+        volumeMounts:
+        - name: var-logs
+          mountPath: /var/log
+      dnsPolicy: Default
+      volumes:
+      - name: var-logs
+        emptyDir: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-webapp
+  labels:
+    run: node-webapp
+spec:
+  ports:
+  - port: 3080
+    protocol: TCP
+  selector:
+    app: node-webapp
+  type: NodePort
+```  
 
 Let’s follow these commands to test the deployment.
 
