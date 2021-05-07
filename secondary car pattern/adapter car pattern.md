@@ -124,7 +124,35 @@ The following are the commands creating a Docker image and pushing into Docker H
 
 Once the Docker image is ready and pushed into Docker Hub and it can be available publicly. You can pull it when creating a pod. Here is a simple pod that has a main and adapter container. The main container is busybox generating some logs to the path ***/var/log/file.log*** from the volume mount **workdir** location. Since the Adapter container and main container runs parallel node express API will display the new log information every time you hit in the browser.
 
- <iframe src="https://medium.com/media/edffc6ef7d6eb618aa50a20be37d7ca8" frameborder=0></iframe>
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: adapter-container-demo
+spec:
+  containers:
+  - image: busybox
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo $(date -u)'#This is log' >> /var/log/file.log; sleep 5;done"]
+    name: main-container
+    resources: {}
+    volumeMounts:
+    - name: var-logs
+      mountPath: /var/log
+  - image: bbachin1/adapter-node-server
+    name: adapter-container
+    imagePullPolicy: Always
+    resources: {}
+    ports:
+      - containerPort: 3080
+    volumeMounts:
+    - name: var-logs
+      mountPath: /var/log
+  dnsPolicy: Default
+  volumes:
+  - name: var-logs
+    emptyDir: {}
+```    
 
     // create the pod
     kubectl create -f pod.yml
