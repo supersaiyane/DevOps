@@ -105,7 +105,72 @@ Let’s create a deployment object with the same pod specification with 5 replic
 
 Let’s look at the below deployment object where we define two init containers. Init containers run sequentially the first init container writes this line **“<html><h1>Hi I am from Init container</h1>” **and the second container appends this line **“<p>Hi I am from second Init container</p></html>” **to the file index.html. you can see that in action in a while.
 
- <iframe src="https://medium.com/media/f996e7da9a5e63e9b31a573e7742085c" frameborder=0></iframe>
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-webapp
+  name: nginx-webapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nginx-webapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-webapp
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: workdir
+          mountPath: /usr/share/nginx/html
+      # These containers are run during pod initialization
+      initContainers:
+      - name: busybox1
+        image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "echo '<html><h1>Hi I am from Init container</h1>' >> /work-dir/index.html"]
+        volumeMounts:
+        - name: workdir
+          mountPath: "/work-dir"
+      - name: busybox2
+        image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "echo '<p>Hi I am from second Init container</p></html>' >> /work-dir/index.html"]
+        volumeMounts:
+        - name: workdir
+          mountPath: "/work-dir"
+      dnsPolicy: Default
+      volumes:
+      - name: workdir
+        emptyDir: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-webapp
+  labels:
+    run: nginx-webapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: nginx-webapp
+  type: NodePort
+```  
 
 Let’s follow these commands to test the deployment.
 
