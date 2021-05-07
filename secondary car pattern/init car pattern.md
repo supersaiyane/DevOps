@@ -51,7 +51,34 @@ Here is the example project you can clone and run it on your machine. You need t
 
 Let’s implement a simple project to understand this pattern. Here is a simple pod that has main and init containers. The main container is nginx serving on the port **80 **that takes the index.html from the volume mount **workdir** location. The init container with the image busybox will create the file at the same location. Since the Init container is run first and terminated before the start of the main container Nginx will find the file at the location **/usr/share/nginx/html.**
 
- <iframe src="https://medium.com/media/5f905b5b91e0c86075f4d0cc788893a2" frameborder=0></iframe>
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-container-demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: workdir
+      mountPath: /usr/share/nginx/html
+  # These containers are run during pod initialization
+  initContainers:
+  - name: busybox
+    image: busybox
+    command: ["/bin/sh"]
+    args: ["-c", "echo '<html><h1>Hi I am from Init container</h1><html>' >> /work-dir/index.html"]
+    volumeMounts:
+    - name: workdir
+      mountPath: "/work-dir"
+  dnsPolicy: Default
+  volumes:
+  - name: workdir
+    emptyDir: {}
+ ```   
 
 Let’s run the following commands to create the pod and test it out.
 
